@@ -5,6 +5,7 @@ import DishDetail from './DishDetailComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
 import Contact from './ContactComponent';
+import About from './AboutComponent';
 import { DISHES } from '../compartida/dishes';
 import { COMMENTS } from '../compartida/comments';
 import { LEADERS } from '../compartida/leader';
@@ -56,6 +57,7 @@ class Main extends Component {
                     <Route exact path='/menu' component={() => <Menu dishes={this.state.dishes} />} /> {/*Otra forma de pasar atributos a los componentes usando Routing*/}
                     <Route path="/menu/:dishId" component={DishWithId} />
                     <Route exact path="/contactus" component={Contact} />
+                    <Route exact path="/aboutus" component={() => <About leaders={this.state.leaders} />} />
                     <Redirect to="/home" />
                 </Switch>
                 <Footer />
