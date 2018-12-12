@@ -1,21 +1,33 @@
 import React, { Component } from 'react';
-import './ComponentsCss/Header.css';
-import { Navbar, NavbarBrand, Jumbotron, Nav, NavbarToggler, Collapse, NavItem } from 'reactstrap';
+import { Navbar, NavbarBrand, Jumbotron, Nav, NavbarToggler, Collapse, NavItem, Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input } from 'reactstrap';
 import { NavLink } from 'react-router-dom'; /*Para hacer los links que naveguen con el Router*/
-
+import './ComponentsCss/Header.css';
 
 class Header extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            isNavOpen: false
+            isNavOpen: false,
+            isModalOpen: false
         }
         this.toggleNav = this.toggleNav.bind(this); {/*Declarando esto permitimos que el metodo toggleNav pueda ser llamado usando this.toggleNav*/ }
+        this.toggleModal = this.toggleModal.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
     }
 
     toggleNav() {
         this.setState({ isNavOpen: !this.state.isNavOpen })
+    }
+
+    toggleModal() {
+        this.setState({ isModalOpen: !this.state.isModalOpen })
+    }
+
+    handleLogin(event) {
+        this.toggleModal(); {/*Esto es para cerrar el modal*/ }
+        alert("Username: " + this.username.value + " Password: " + this.pass.value + " Remember: " + this.remember.checked);
+        event.preventDefault();
     }
 
     render() {
@@ -26,8 +38,8 @@ class Header extends Component {
                         <NavbarToggler onClick={this.toggleNav} /> {/*El onClick llama a esa funcion que cambia el state a true y muestra la navegacion*/}
                         <NavbarBrand className="mr-auto" href="/" className="titulo"><img src="assets/images/logo.png" height="30" width="41" alt="Ristorante Con Fusion" /></NavbarBrand>
                         <Collapse isOpen={this.state.isNavOpen} navbar> {/*El isNavOpen funciona para que la barra se colapse, si es false no se muestra, si es true si*/}
-                            <Nav navbar>
-                                <NavItem>
+                            <Nav navbar className="navbarA">
+                                <NavItem >
                                     <NavLink className="nav-link" to="/home"><span className="fa fa-home fa-lg"></span> Home</NavLink> {/*La className nav-link, pone los botones bonitos para que se vean bien en la navegacion*/}
                                 </NavItem>
                                 <NavItem>
@@ -38,6 +50,11 @@ class Header extends Component {
                                 </NavItem>
                                 <NavItem>
                                     <NavLink className="nav-link" to="/contactus"><span className="fa fa-address-card fa-lg"></span> Contact</NavLink>
+                                </NavItem>
+                            </Nav>
+                            <Nav className="ml-auto" navbar>
+                                <NavItem>
+                                    <Button outline onClick={this.toggleModal}><span className="fa fa-sign-in fa-lg"></span> LogIn</Button>
                                 </NavItem>
                             </Nav>
                         </Collapse>
@@ -53,6 +70,28 @@ class Header extends Component {
                         </div>
                     </div>
                 </Jumbotron>
+                <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                    <ModalHeader toggle={this.toggleModal} >Log In</ModalHeader>
+                    <ModalBody>
+                        <Form onSubmit={this.handleLogin}>
+                            <FormGroup>
+                                <Label htmlFor="username">Username</Label>
+                                <Input type="text" id="username" name="username" innerRef={(input) => this.username = input} /> {/*Con el innerRef, lo que haces es ponerle el valor a username con lo que escribio el usuario, hay que hacerlo, sino, todo seria sin sentido*/}
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="pass">Password</Label>
+                                <Input type="password" id="pass" name="pass" innerRef={(input) => this.pass = input} />
+                            </FormGroup>
+                            <FormGroup check>
+                                <Label check>
+                                    <Input type="checkbox" name="remember" innerRef={(input) => this.remember = input} />
+                                    Remembre me
+                                </Label>
+                            </FormGroup>
+                            <Button type="submit" value="submit" color="dark">Log In</Button>
+                        </Form>
+                    </ModalBody>
+                </Modal>
             </>
         );
     };
