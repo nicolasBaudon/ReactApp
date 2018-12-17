@@ -3,6 +3,13 @@ import { Breadcrumb, BreadcrumbItem, Button, Label, Col, Row } from 'reactstrap'
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form'
 
+
+const required = (val) => val && val.length; {/*funcion para verificar que el valor que se pasa sea mayor que 0*/ }
+const maxLength = (len) => (val) => !(val) || (val.length <= len); {/*Funcion para verificar que el valor que se pasa sea menor que cierto valor*/ }
+const minLength = (len) => (val) => (val) && (val.length >= len); {/*Funcion para verificar que el valor ingresado sea mayor que el valor que tiene que ser*/ }
+const isNumber = (val) => !isNaN(Number(val)); {/*Funcion para verificar que el valor ingresado es un valor*/ }
+const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val); {/*Funcion para verificar que el valor que se ingresa cumple con esa expresion regular. La expresion verifica que empiece con un combinacion de carateres que sean de la A a la Z despues un arroba seguido con otra combinacion de la A a la Z, seguido por un punto, y despues otra combinacion de la A a la Z pero con un valor de entre 2 y 4 caracteres*/ }
+
 class Contact extends Component {
 
     constructor(props) {
@@ -65,25 +72,45 @@ class Contact extends Component {
                             <Row className="form-group">
                                 <Label htmlfor="firstName" md={2}>First Name:</Label> {/*El md con el 2 significa que para dispositivos medianos y grandes el label ocupa dos columnas de las 12 y el htmlfor se pone para no confunfir el for, que se usa en html simple, con el for de javascipt*/}
                                 <Col md={10}> {/*Col en Reactstrap con el md={10} es como poner un div que va a ocupar 10 columnas*/}
-                                    <Control.text model=".firstName" id="firstName" name="firstName" placeholder="First Name" className="form-control" /> {/*El model en redux es el nombre de la propiedad en la que se va a asiganr el valor de lo que se ingrese*/}
+                                    <Control.text model=".firstName" id="firstName" name="firstName" placeholder="First Name" className="form-control" validators={{ required, minLength: minLength(3), maxLength: maxLength(15) }} /> {/*El model en redux es el nombre de la propiedad en la que se va a asiganr el valor de lo que se ingrese*/}
+                                    <Errors className="text-danger" model=".firstName" show="touched" messages={{
+                                        required: "Required",
+                                        minLength: "Must be grater than 2 characters",
+                                        maxLength: "Must be 15 characters or less"
+                                    }} />
                                 </Col>
                             </Row>
                             <Row className="form-group">
                                 <Label htmlfor="lastName" md={2}>Last Name:</Label> {/*El md con el 2 significa que para dispositivos medianos y grandes el label ocupa dos columnas de las 12 y el htmlfor se pone para no confunfir el for, que se usa en html simple, con el for de javascipt*/}
                                 <Col md={10}> {/*Col en Reactstrap con el md={10} es como poner un div que va a ocupar 10 columnas*/}
-                                    <Control.text model=".lastName" id="lastName" name="lastName" placeholder="Last Name" className="form-control" />
+                                    <Control.text model=".lastName" id="lastName" name="lastName" placeholder="Last Name" className="form-control" validators={{ required, minLength: minLength(3), maxLength: maxLength(15) }} />
+                                    <Errors className="text-danger" model=".lastName" show="touched" messages={{
+                                        required: "Required",
+                                        minLength: "Must be grater than 2 characters",
+                                        maxLength: "Must be 15 characters or less"
+                                    }} />
                                 </Col>
                             </Row>
                             <Row className="form-group">
                                 <Label htmlfor="telNum" md={2}>Contact Tel:</Label> {/*El md con el 2 significa que para dispositivos medianos y grandes el label ocupa dos columnas de las 12 y el htmlfor se pone para no confunfir el for, que se usa en html simple, con el for de javascipt*/}
                                 <Col md={10}> {/*Col en Reactstrap con el md={10} es como poner un div que va a ocupar 10 columnas*/}
-                                    <Control.text model=".telNum" id="telNum" name="telNum" placeholder="Tel Num" className="form-control" />
+                                    <Control.text model=".telNum" id="telNum" name="telNum" placeholder="Tel Num" className="form-control" validators={{ isNumber, required, minLength: minLength(3), maxLength: maxLength(15) }} />
+                                    <Errors className="text-danger" model=".telNum" show="touched" messages={{
+                                        isNumber: "It Must be a number",
+                                        required: "Required",
+                                        minLength: "Must be grater than 2 numbers",
+                                        maxLength: "Must be 15 numbers or less"
+                                    }} />
                                 </Col>
                             </Row>
                             <Row className="form-group">
                                 <Label htmlfor="email" md={2}>Email:</Label> {/*El md con el 2 significa que para dispositivos medianos y grandes el label ocupa dos columnas de las 12 y el htmlfor se pone para no confunfir el for, que se usa en html simple, con el for de javascipt*/}
                                 <Col md={10}> {/*Col en Reactstrap con el md={10} es como poner un div que va a ocupar 10 columnas*/}
-                                    <Control.text model=".email" id="email" name="email" placeholder="Email" className="form-control" />
+                                    <Control.text model=".email" id="email" name="email" placeholder="Email" className="form-control" validators={{ validEmail, required }} />
+                                    <Errors className="text-danger" model=".email" show="touched" messages={{
+                                        validEmail: "Invalid Email Adress",
+                                        required: "Required"
+                                    }} />
                                 </Col>
                             </Row>
                             <Row className="form-group">
