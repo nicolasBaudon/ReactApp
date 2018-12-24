@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Breadcrumb, BreadcrumbItem, Button, Label, Col, Row } from 'reactstrap'
 import { Link } from 'react-router-dom';
-import { Control, LocalForm, Errors } from 'react-redux-form'
+import { Control, Form, Errors, actions } from 'react-redux-form'
 
 
 const required = (val) => val && val.length; {/*funcion para verificar que el valor que se pasa sea mayor que 0*/ }
@@ -21,6 +21,7 @@ class Contact extends Component {
     handleSubmit(values) {
         {/*Esta funcion hace algo cada vez que se envia la info del form, osea cada vez que se toca el submit*/ }
         alert(JSON.stringify(values));
+        this.props.resetFeedbackForm(); /*Solo borra los datos cargados en la form cuando son mandados, si se navega por los componentes se mantienen*/
     }
 
     render() {
@@ -68,7 +69,7 @@ class Contact extends Component {
                         <hr />
                     </div>
                     <div className="col-12 col-md-9">
-                        <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+                        <Form model="feedback" onSubmit={(values) => this.handleSubmit(values)}> {/*La form con la propiedad model igual a ese valor permite que se llene la propiedad dentro del estado(que tiene el mismo nombre que el model) y asi cambiar el estado de la aplicacion*/}
                             <Row className="form-group">
                                 <Label htmlfor="firstName" md={2}>First Name:</Label> {/*El md con el 2 significa que para dispositivos medianos y grandes el label ocupa dos columnas de las 12 y el htmlfor se pone para no confunfir el for, que se usa en html simple, con el for de javascipt*/}
                                 <Col md={10}> {/*Col en Reactstrap con el md={10} es como poner un div que va a ocupar 10 columnas*/}
@@ -139,7 +140,7 @@ class Contact extends Component {
                                     <Button type="submit" color="dark">Send Feedback</Button>
                                 </Col>
                             </Row>
-                        </LocalForm>
+                        </Form>
                     </div>
                 </div>
             </div>
