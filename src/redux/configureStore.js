@@ -1,8 +1,10 @@
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Dishes } from './dishesReducer';
 import { Comments } from './commentsReducer';
 import { Leaders } from './leadersReducer';
 import { Promotions } from './promotionsReducer';
+import thunk from 'redux-thunk';
+import logger from 'redux-logger';
 
 export const ConfigureStore = () => {
     const store = createStore(
@@ -11,7 +13,8 @@ export const ConfigureStore = () => {
             comments: Comments,
             leaders: Leaders,
             promotions: Promotions
-        })
+        }),
+        applyMiddleware(thunk, logger) /*Esta funcion es el segundo parametro del create store, es una funcion enhancer, es decir que modifican el camino al store, y este parametro es el que crea el middleware que va a ser tipo thunk*/
     );
     return store;
 }
