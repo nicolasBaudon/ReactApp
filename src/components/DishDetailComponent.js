@@ -6,6 +6,7 @@ import {
 import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors } from 'react-redux-form'
 import { Loading } from './LoadingComponent';
+import { baseUrl } from '../compartida/baseUrl';
 
 const minLength = (len) => (val) => (val) && (val.length >= len);
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -92,7 +93,7 @@ class CommentForm extends Component {
 function RenderDish({ dish }) {
     return (
         <Card>
-            <CardImg top src={dish.image} alt={dish.name} />
+            <CardImg top src={baseUrl + dish.image} alt={dish.name} />
             <CardBody>
                 <CardTitle>{dish.name}</CardTitle>
                 <CardText>{dish.description}</CardText>
@@ -101,7 +102,7 @@ function RenderDish({ dish }) {
     );
 }
 
-function RenderComment({ comentario, addComment, dishId }) {
+function RenderComment({ comentario, addComment, dishId, commentsErrMess }) {
     var comment = comentario.map((commentS) => {
         return (
             <div>
@@ -159,7 +160,8 @@ const DishDetail = (props) => {
                         <ul className="list-unstyled">
                             <RenderComment comentario={props.comments}
                                 addComment={props.addComment}
-                                dishId={props.dish.id} />
+                                dishId={props.dish.id}
+                                commentsErrMess={props.commentsErrMess} />
                         </ul>
                     </div>
                 </div>
