@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { Control, LocalForm, Errors } from 'react-redux-form'
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../compartida/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const minLength = (len) => (val) => (val) && (val.length >= len);
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -92,29 +93,36 @@ class CommentForm extends Component {
 
 function RenderDish({ dish }) {
     return (
-        <Card>
-            <CardImg top src={baseUrl + dish.image} alt={dish.name} />
-            <CardBody>
-                <CardTitle>{dish.name}</CardTitle>
-                <CardText>{dish.description}</CardText>
-            </CardBody>
-        </Card>
+        <FadeTransform in transformProps={{ exitTransform: 'scale(0.5) translateY(-50%)' }}>
+            <Card>
+                <CardImg top src={baseUrl + dish.image} alt={dish.name} />
+                <CardBody>
+                    <CardTitle>{dish.name}</CardTitle>
+                    <CardText>{dish.description}</CardText>
+                </CardBody>
+            </Card>
+        </FadeTransform>
     );
 }
 
 function RenderComment({ comentario, postComment, dishId, commentsErrMess }) {
-    var comment = comentario.map((commentS) => {
-        return (
-            <div>
-                <li className="mt-2">{commentS.comment}</li>
-                <li className="mt-2">-- {commentS.author}, {new Intl.DateTimeFormat('es', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(commentS.date)))}</li> {/*Esa funcion esa para convertir una hora en formato bien*/}
-            </div>
-        );
-    })
     return (
         <div>
             <h4>Comments</h4>
-            {comment}
+            <ul className="list-unstyled">
+                <Stagger in>
+                    {comentario.map((commentS) => {
+                        return (
+                            <Fade in>
+                                <li key={commentS.id}>
+                                    <p className="mt-2">{commentS.comment}</p>
+                                    <p className="mt-2">-- {commentS.author}, {new Intl.DateTimeFormat('es', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(commentS.date)))}</p> {/*Esa funcion esa para convertir una hora en formato bien*/}
+                                </li>
+                            </Fade>
+                        );
+                    })}
+                </Stagger>
+            </ul>
             <CommentForm postComment={postComment} dishId={dishId} />
         </div>
     );
@@ -157,12 +165,11 @@ const DishDetail = (props) => {
                         <RenderDish dish={props.dish} />
                     </div>
                     <div className="col-12 col-md-4 m-1">
-                        <ul className="list-unstyled">
-                            <RenderComment comentario={props.comments}
-                                postComment={props.postComment}
-                                dishId={props.dish.id}
-                                commentsErrMess={props.commentsErrMess} />
-                        </ul>
+                        <RenderComment comentario={props.comments}
+                            postComment={props.postComment}
+                            dishId={props.dish.id}
+                            commentsErrMess={props.commentsErrMess}
+                        />
                     </div>
                 </div>
             </div>
