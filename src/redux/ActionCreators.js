@@ -1,15 +1,50 @@
 import * as ActionTypes from './ActionType';
 import { baseUrl } from '../compartida/baseUrl';
 
-export const addComment = (dishId, rating, author, comment) => ({
+export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
-    payload: {
+    payload: comment
+})
+
+export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+
+    const newComment = {
         dishId: dishId,
         rating: rating,
         author: author,
-        comment: comment
+        comment: comment,
+        date: new Date().toISOString() /*el new date saca la fecha de hoy, y el toISOString la convierte en string en un formato especial*/
     }
-})
+
+    return fetch(baseUrl + 'comments', { /*De esta forma podemos especificar que es un POST*/
+        method: 'POST',
+        body: JSON.stringify(newComment), /*Siempre hay que hacerlo asi porque asi recibe la info este servidor*/
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+    })
+        .then(response => {
+            if (response.ok) {
+                return response
+            }
+            else {
+                var error = new Error("Error " + response.status + ": " + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                var errorMess = new Error(error.message);
+                throw errorMess;
+            })
+        .then(response => response.json())
+        .then(response => dispatch(addComment(response)))
+        .catch(error => {
+            console.log(error.message);
+            alert("No se pudo subir el comentario");
+        });
+}
 
 export const fetchDishes = () => (dispatch) => { /*Al escribir todo de esta manera se puede ver que es un thunk porque es una funcion con otra dentro que utiliza el metodo dispatch, es decir, el retorno de la funcion de afuera va a ser una funcion*/
     dispatch(dishesLoading(true));

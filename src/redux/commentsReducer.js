@@ -11,8 +11,6 @@ export const Comments = (state = {
             return { ...state, isLoading: false, errMess: action.payload, comments: [] }
         case ActionTypes.ADD_COMMENT:
             var comment = action.payload;
-            comment.id = state.comments.length;
-            comment.date = new Date().toISOString(); /*el new date saca la fecha de hoy, y el toISOString la convierte en string en un formato especial*/
             return { ...state, comments: state.comments.concat(comment) }; /*Esta funcion concatena en el array del state con el nuevo comentario*/
         default: return state;
     }
