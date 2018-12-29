@@ -15,8 +15,23 @@ export const fetchDishes = () => (dispatch) => { /*Al escribir todo de esta mane
     dispatch(dishesLoading(true));
 
     return fetch(baseUrl + 'dishes')
+        .then(response => {
+            if (response.ok) {
+                return response
+            }
+            else {
+                var error = new Error("Error " + response.status + ": " + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                var errorMess = new Error(error.message);
+                throw errorMess;
+            })
         .then(response => response.json())
-        .then(dishes => dispatch(addDishes(dishes)));
+        .then(dishes => dispatch(addDishes(dishes)))
+        .catch(error => dispatch(dishesFailed(error.message)));
 }
 
 export const dishesLoading = () => ({
@@ -36,11 +51,26 @@ export const addDishes = (dishes) => ({
 export const fetchComments = () => (dispatch) => { /*Al escribir todo de esta manera se puede ver que es un thunk porque es una funcion con otra dentro que utiliza el metodo dispatch, es decir, el retorno de la funcion de afuera va a ser una funcion*/
 
     return fetch(baseUrl + 'comments')
+        .then(response => {
+            if (response.ok) {
+                return response
+            }
+            else {
+                var error = new Error("Error " + response.status + ": " + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                var errorMess = new Error(error.message);
+                throw errorMess;
+            })
         .then(response => response.json())
-        .then(comments => dispatch(addComments(comments)));
+        .then(comments => dispatch(addComments(comments)))
+        .catch(error => dispatch(commentsFailed(error.message)))
 }
 
-export const commetsFailed = (errmess) => ({
+export const commentsFailed = (errmess) => ({
     type: ActionTypes.COMMENTS_FAILED,
     payload: errmess
 })
@@ -54,8 +84,23 @@ export const fetchPromos = () => (dispatch) => { /*Al escribir todo de esta mane
     dispatch(promosLoading(true));
 
     return fetch(baseUrl + 'promotions')
+        .then(response => {
+            if (response.ok) {
+                return response
+            }
+            else {
+                var error = new Error("Error " + response.status + ": " + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+            error => {
+                var errorMess = new Error(error.message);
+                throw errorMess;
+            })
         .then(response => response.json())
-        .then(promos => dispatch(addPromos(promos)));
+        .then(promos => dispatch(addPromos(promos)))
+        .catch(error => dispatch(promosFailed(error.message)))
 }
 
 export const promosLoading = () => ({
