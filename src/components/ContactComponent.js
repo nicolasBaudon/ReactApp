@@ -20,7 +20,7 @@ class Contact extends Component {
 
     handleSubmit(values) {
         {/*Esta funcion hace algo cada vez que se envia la info del form, osea cada vez que se toca el submit*/ }
-        alert(JSON.stringify(values));
+        this.props.postFeedback(values.firstName, values.lastName, values.telNum, values.email, values.agree, values.contactType, values.message)
         this.props.resetFeedbackForm(); /*Solo borra los datos cargados en la form cuando son mandados, si se navega por los componentes se mantienen*/
     }
 
