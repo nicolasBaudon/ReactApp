@@ -11,7 +11,7 @@ class Header extends Component {
             isNavOpen: false,
             isModalOpen: false
         }
-        this.toggleNav = this.toggleNav.bind(this); {/*Declarando esto permitimos que el metodo toggleNav pueda ser llamado usando this.toggleNav*/ }
+        this.toggleNav = this.toggleNav.bind(this); /*Declarando esto permitimos que el metodo toggleNav pueda ser llamado usando this.toggleNav*/
         this.toggleModal = this.toggleModal.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
     }
@@ -25,7 +25,7 @@ class Header extends Component {
     }
 
     handleLogin(event) {
-        this.toggleModal(); {/*Esto es para cerrar el modal*/ }
+        this.toggleModal(); /*Esto es para cerrar el modal*/
         alert("Username: " + this.username.value + " Password: " + this.pass.value + " Remember: " + this.remember.checked);
         event.preventDefault();
     }

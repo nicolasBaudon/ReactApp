@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Breadcrumb, BreadcrumbItem, Button, Label, Col, Row } from 'reactstrap'
 import { Link } from 'react-router-dom';
-import { Control, Form, Errors, actions } from 'react-redux-form'
+import { Control, Form, Errors } from 'react-redux-form'
 
 
-const required = (val) => val && val.length; {/*funcion para verificar que el valor que se pasa sea mayor que 0*/ }
-const maxLength = (len) => (val) => !(val) || (val.length <= len); {/*Funcion para verificar que el valor que se pasa sea menor que cierto valor*/ }
-const minLength = (len) => (val) => (val) && (val.length >= len); {/*Funcion para verificar que el valor ingresado sea mayor que el valor que tiene que ser*/ }
-const isNumber = (val) => !isNaN(Number(val)); {/*Funcion para verificar que el valor ingresado es un valor*/ }
-const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val); {/*Funcion para verificar que el valor que se ingresa cumple con esa expresion regular. La expresion verifica que empiece con un combinacion de carateres que sean de la A a la Z despues un arroba seguido con otra combinacion de la A a la Z, seguido por un punto, y despues otra combinacion de la A a la Z pero con un valor de entre 2 y 4 caracteres*/ }
+const required = (val) => val && val.length; /*funcion para verificar que el valor que se pasa sea mayor que 0*/
+const maxLength = (len) => (val) => !(val) || (val.length <= len); /*Funcion para verificar que el valor que se pasa sea menor que cierto valor*/
+const minLength = (len) => (val) => (val) && (val.length >= len); /*Funcion para verificar que el valor ingresado sea mayor que el valor que tiene que ser*/
+const isNumber = (val) => !isNaN(Number(val)); /*Funcion para verificar que el valor ingresado es un valor*/
+const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val); /*Funcion para verificar que el valor que se ingresa cumple con esa expresion regular. La expresion verifica que empiece con un combinacion de carateres que sean de la A a la Z despues un arroba seguido con otra combinacion de la A a la Z, seguido por un punto, y despues otra combinacion de la A a la Z pero con un valor de entre 2 y 4 caracteres*/
 
 class Contact extends Component {
 
@@ -19,7 +19,7 @@ class Contact extends Component {
     }
 
     handleSubmit(values) {
-        {/*Esta funcion hace algo cada vez que se envia la info del form, osea cada vez que se toca el submit*/ }
+        /*Esta funcion hace algo cada vez que se envia la info del form, osea cada vez que se toca el submit*/
         this.props.postFeedback(values.firstName, values.lastName, values.telNum, values.email, values.agree, values.contactType, values.message)
         this.props.resetFeedbackForm(); /*Solo borra los datos cargados en la form cuando son mandados, si se navega por los componentes se mantienen*/
     }

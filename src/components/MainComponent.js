@@ -33,9 +33,6 @@ const mapDispatchToProps = (dispatch) => ({
 
 class Main extends Component {
 
-    constructor(props) {
-        super(props);
-    }
 
     /*cambiarEstado(dishId) {
                 this.setState({ selectedDish: dishId }); ------ Esto cabiaba el selectedDish para mandar ese plato desp al DishDetail
